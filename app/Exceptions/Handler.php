@@ -61,6 +61,26 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
+        $class = get_class($e);
+        $class = substr($class, strrpos($class, '\\') + 1);
+        switch ($class) {
+            case 'ValidationException': //422
+                $result = new Result();
+                $result->setMessage($e->getMessage());
+                $result->setErrors($e->validator->errors());
+                $result->setSuccess(false);
+                return response()->json($result->response(), Response::HTTP_UNPROCESSABLE_ENTITY);
+                break;
+            case 'ModelNotFoundException': //404
+            case 'NotFoundHttpException': //404
+                $result = new Result();
+                $result->setMessage($e->getMessage());
+                $result->setErrors(null);
+                $result->setSuccess(false);
+                return response()->json($result->response(), Response::HTTP_NOT_FOUND);
+                break;
+            default:
+        }
         return parent::render($request, $e);
     }
 }
