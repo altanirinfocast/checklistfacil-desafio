@@ -70,3 +70,9 @@ ou
 ```shell
 php artisan queue:work
 ```
+
+## Para execução dos testes
+
+```shell
+./vendor/bin/sail artisan test
+````
