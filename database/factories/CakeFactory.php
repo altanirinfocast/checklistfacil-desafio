@@ -16,6 +16,12 @@ class CakeFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        $fake_locale = fake('pt_BR');
+        return [
+            'name' => $fake_locale->name(),
+            'price' => rand(100, 9999)/100,
+            'weight' => rand(1, 999),
+            'quantity' => rand(0, 99999)
+        ];
     }
 }
